@@ -76,7 +76,7 @@ def load_historic_renewability():
     Returns:
         np.array: historic renewability percentage data for the United Kingdom between 2018-2021
     """
-    brit = pd.read_csv("df_fuel_ckan.csv", delimiter=',')
+    brit = pd.read_sql_table('fuel', 'postgres:///postgres')
     brit = brit[::2]
     brit = brit[brit['DATETIME'] >= "2018-01-01 00:00:00"]
     brit = brit[brit['DATETIME'] < "2022-01-01 00:00:00"]
@@ -126,7 +126,7 @@ def get_country_renewability(country="United Kingdom"):
     Returns:
         float: percentage of renewables in electricity grid
     """
-    data = pd.read_csv(Path.cwd() / "energygen" / "predictor" / "share-elec-by-source.csv", delimiter=',')
+    data = pd.read_sql_table('elec', 'postgres:///postgres')
     data = data[data["Year"] == 2020]
     data = data[data["Entity"] == country]
     data_renew = data[["Nuclear (% electricity)",
