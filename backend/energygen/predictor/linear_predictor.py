@@ -84,7 +84,7 @@ def load_historic_renewability():
     # db_name = os.getenv('DATABASE_NAME')
     # db_connection_name = os.environ.get('DATABASE_NAME_CONNECTION_NAME')
     engine = create_engine(f'postgresql+psycopg2://{db_user}:{db_pass}@localhost:5432/')
-    brit = pd.read_sql_table('select * from "elec"', con=engine)
+    brit = pd.read_sql_table('select * from "fuel";', con=engine)
     brit = brit[::2]
     brit = brit[brit['DATETIME'] >= "2018-01-01 00:00:00"]
     brit = brit[brit['DATETIME'] < "2022-01-01 00:00:00"]
@@ -139,7 +139,7 @@ def get_country_renewability(country="United Kingdom"):
     # db_name = os.getenv('DATABASE_NAME')
     # db_connection_name = os.environ.get('DATABASE_NAME_CONNECTION_NAME')
     engine = create_engine(f'postgresql+psycopg2://{db_user}:{db_pass}@localhost:5432/')
-    data = pd.read_sql_table('select * from "elec"', con=engine)
+    data = pd.read_sql_table('select * from "elec";', con=engine)
     # data = pd.read_sql_table('elec', 'postgres:///postgres')
     data = data[data["Year"] == 2020]
     data = data[data["Entity"] == country]
