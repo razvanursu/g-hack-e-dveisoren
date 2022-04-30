@@ -22,7 +22,7 @@ steps:
     args: 
       - '-c'
       - |
-          docker build -t gcr.io/valid-cedar-346007/backend:${SHORT_SHA} ./backend
+          docker build -t gcr.io/plugcheck/backend:${SHORT_SHA} ./backend
 
 
 ### Test
@@ -35,7 +35,7 @@ steps:
     args: 
       - '-c'
       - |
-          docker push gcr.io/valid-cedar-346007/backend:${SHORT_SHA}
+          docker push gcr.io/plugcheck/backend:${SHORT_SHA}
 
 
 
@@ -55,7 +55,7 @@ steps:
             --zone "${_ZONE}"  
 
 
-          sed -i 's|gcr.io/valid-cedar-346007/backend:.*|gcr.io/valid-cedar-346007/backend:${SHORT_SHA}|' ./k8s/deployments/prod/*.yaml
+          sed -i 's|gcr.io/plugcheck/backend:.*|gcr.io/plugcheck/backend:${SHORT_SHA}|' ./k8s/deployments/prod/*.yaml
           
           kubectl get ns production || kubectl create ns production
           kubectl apply --namespace production --recursive -f k8s/deployments/prod

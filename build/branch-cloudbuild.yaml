@@ -22,7 +22,7 @@ steps:
     args: 
       - '-c'
       - |
-          docker build -t gcr.io/valid-cedar-346007/backend:${BRANCH_NAME}-${SHORT_SHA} ./backend
+          docker build -t gcr.io/plugcheck/backend:${BRANCH_NAME}-${SHORT_SHA} ./backend
 
 
 
@@ -36,7 +36,7 @@ steps:
     args: 
       - '-c'
       - |
-          docker push gcr.io/valid-cedar-346007/backend:${BRANCH_NAME}-${SHORT_SHA}
+          docker push gcr.io/plugcheck/backend:${BRANCH_NAME}-${SHORT_SHA}
 
 
 
@@ -57,7 +57,7 @@ steps:
             --project "$${PROJECT}" \
             --zone "${_ZONE}"  
 
-          sed -i 's|gcr.io/valid-cedar-346007/backend:.*|gcr.io/valid-cedar-346007/backend:${BRANCH_NAME}-${SHORT_SHA}|' ./k8s/deployments/dev/*.yaml
+          sed -i 's|gcr.io/plugcheck/backend:.*|gcr.io/plugcheck/backend:${BRANCH_NAME}-${SHORT_SHA}|' ./k8s/deployments/dev/*.yaml
           
           kubectl get ns ${BRANCH_NAME} || kubectl create ns ${BRANCH_NAME}
           kubectl apply --namespace ${BRANCH_NAME} --recursive -f k8s/deployments/dev
