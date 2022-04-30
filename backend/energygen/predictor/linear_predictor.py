@@ -129,11 +129,11 @@ def get_country_renewability(country="United Kingdom"):
     data = pd.read_sql_table('elec', 'postgres:///postgres')
     data = data[data["Year"] == 2020]
     data = data[data["Entity"] == country]
-    data_renew = data[["Nuclear (% electricity)",
-                       "Hydro (% electricity)",
-                       "Wind (% electricity)",
-                       "Solar (% electricity)",
-                       "Other renewables including bioenergy (% electricity)"]]
+    data_renew = data[["Nuclear",
+                       "Hydro",
+                       "Wind",
+                       "Solar",
+                       "Other"]]
 
     renew = data_renew.sum(axis=1).to_numpy()[0]
     return renew/100
