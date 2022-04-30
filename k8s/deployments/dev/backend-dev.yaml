@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/valid-cedar-346007/backend:1.0.0
+        image: gcr.io/plugcheck/backend:1.0.0
         imagePullPolicy: Always
         resources:
           limits:
@@ -68,7 +68,7 @@ spec:
             memory: "500Mi"
             cpu: "100m"
         command: ["/cloud_sql_proxy", "--dir=/cloudsql",
-                  "-instances=valid-cedar-346007:europe-west3:postgresql01=tcp:5432",
+                  "-instances=plugcheck:europe-west3:postgresql01=tcp:5432",
                   "-credential_file=/secrets/cloudsql/credentials.json"]
         volumeMounts:
           - name: cloudsql-oauth-credentials
