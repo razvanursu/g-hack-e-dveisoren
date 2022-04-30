@@ -141,13 +141,14 @@ def get_country_renewability(country="United Kingdom"):
     engine = create_engine(f'postgresql+psycopg2://{db_user}:{db_pass}@localhost:5432/')
     data = pd.read_sql_table('elec', con=engine)
     # data = pd.read_sql_table('elec', 'postgres:///postgres')
-    data = data[data["Year"] == 2020]
-    data = data[data["Entity"] == country]
-    data_renew = data[["Nuclear",
-                       "Hydro",
-                       "Wind",
-                       "Solar",
-                       "Other"]]
+
+    data = data[data["year"] == "2020"]
+    data = data[data["entity"] == country]
+    data_renew = data[["nuclear",
+                       "hydro",
+                       "wind",
+                       "solar",
+                       "other"]].astype(float)
 
     renew = data_renew.sum(axis=1).to_numpy()[0]
     return renew/100
