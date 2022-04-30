@@ -1,0 +1,92 @@
+# Copyright 2021 Google Inc. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: backend-dev
+spec:
+  selector:
+    matchLabels:
+      app: backend
+      role: backend
+      env: dev
+  replicas: 1
+  template:
+    metadata:
+      name: backend
+      labels:
+        app: backend
+        role: backend
+        env: dev
+    spec:
+      containers:
+      - name: backend
+        image: gcr.io/valid-cedar-346007/backend:1.0.0
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: "100m"
+        ports:
+        - name: backend
+          containerPort: 8080
+        env:
+          - name: PORT
+            value: "8080"
+          - name: DATABASE_NAME
+            valueFrom:
+              secretKeyRef:
+                name: cloudsql
+                key: database
+          - name: DATABASE_USER
+            valueFrom:
+              secretKeyRef:
+                name: cloudsql
+                key: username
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: cloudsql
+                key: password
+      # [START proxy_container]
+      - image: gcr.io/cloudsql-docker/gce-proxy:1.16
+        name: cloudsql-proxy
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: "100m"
+        command: ["/cloud_sql_proxy", "--dir=/cloudsql",
+                  "-instances=valid-cedar-346007:europe-west3:postgresql01=tcp:5432",
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+        volumeMounts:
+          - name: cloudsql-oauth-credentials
+            mountPath: /secrets/cloudsql
+            readOnly: true
+          - name: ssl-certs
+            mountPath: /etc/ssl/certs
+          - name: cloudsql
+            mountPath: /cloudsql
+      # [END proxy_container] 
+      # [START volumes]
+      volumes:
+        - name: cloudsql-oauth-credentials
+          secret:
+            secretName: cloudsql-oauth-credentials
+        - name: ssl-certs
+          hostPath:
+            path: /etc/ssl/certs
+        - name: cloudsql
+          emptyDir: {}
+      # [END volumes]

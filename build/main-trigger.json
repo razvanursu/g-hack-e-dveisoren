@@ -1,0 +1,16 @@
+{
+  "name": "main",
+  "description": "Trigger prod build/deploy for any commit to the main branch",
+
+  "filename": "build/main-cloudbuild.yaml",
+  "triggerTemplate": {
+    "projectId": "valid-cedar-346007",
+    "repoName": "github_razvanursu_ghack-project-demo",
+    "branchName": "main"
+  },
+   "substitutions": {
+    "_ZONE": "europe-west3-c",
+    "_CLUSTER": "ghack-demo-cluster"
+  }
+
+}

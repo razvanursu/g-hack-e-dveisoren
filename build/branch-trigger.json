@@ -1,0 +1,16 @@
+{
+  "name": "branch",
+  "description": "Trigger dev build/deploy for any branch other than main",
+  "filename": "build/branch-cloudbuild.yaml",
+
+  "triggerTemplate": {
+    "projectId": "valid-cedar-346007",
+    "repoName": "github_razvanursu_ghack-project-demo",
+    "branchName": "main",
+    "invertRegex": true
+  },
+   "substitutions": {
+    "_ZONE": "europe-west3-c",
+    "_CLUSTER": "ghack-demo-cluster"
+  }
+}
