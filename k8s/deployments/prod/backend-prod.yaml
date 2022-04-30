@@ -52,7 +52,7 @@ spec:
             memory: "500Mi"
             cpu: "100m"
         command: ["/cloud_sql_proxy", "--dir=/cloudsql",
-                  "-instances=plugcheck:europe-west3:postgresql01=tcp:5432",
+                  "-instances=plugcheck:europe-west3:myinstance=tcp:5432",
                   "-credential_file=/secrets/cloudsql/credentials.json"]
         volumeMounts:
           - name: cloudsql-oauth-credentials
