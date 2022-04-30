@@ -3,6 +3,7 @@ from meteostat import Point, Daily, Hourly
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from pathlib import Path
 
 
 class linear_model:
@@ -11,7 +12,7 @@ class linear_model:
 
     def __init__(self):
         try:
-            self.weights = np.load("linare_weights.npy")
+            self.weights = np.load((Path.cwd() / "energygen" / "predictor" / "linare_weights.npy").resolve())
         except:
             print("no weights found")
 
@@ -125,7 +126,7 @@ def get_country_renewability(country="United Kingdom"):
     Returns:
         float: percentage of renewables in electricity grid
     """
-    data = pd.read_csv("share-elec-by-source.csv", delimiter=',')
+    data = pd.read_csv(Path.cwd() / "energygen" / "predictor" / "share-elec-by-source.csv", delimiter=',')
     data = data[data["Year"] == 2020]
     data = data[data["Entity"] == country]
     data_renew = data[["Nuclear (% electricity)",
